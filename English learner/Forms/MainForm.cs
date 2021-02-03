@@ -20,10 +20,30 @@ namespace English_learner
 
         private void writeButton_Click(object sender, EventArgs e)
         {
-            WriteForm writeForm = new WriteForm();
+            DictionaryOpenForm dictionaryOpenForm = new DictionaryOpenForm(); // открываем форму с открытием dictionary
             Visible = false;
+            dictionaryOpenForm.ShowDialog();
+
+            WriteForm writeForm = new WriteForm();
             writeForm.ShowDialog();
-            Close();
+            if (writeForm.backed)
+                Visible = true;
+            else if (writeForm.closed)
+                Close();
+        }
+
+        private void learnButton_Click(object sender, EventArgs e)
+        {
+            DictionaryOpenForm dictionaryOpenForm = new DictionaryOpenForm(true);
+            Visible = false;
+            dictionaryOpenForm.ShowDialog();
+
+            LearnForm learnForm = new LearnForm();
+            learnForm.ShowDialog();
+            if (learnForm.backed)
+                Visible = true;
+            else if (learnForm.closed)
+                Close();
         }
     }
 }

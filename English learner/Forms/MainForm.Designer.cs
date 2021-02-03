@@ -45,6 +45,7 @@
             this.learnButton.TabIndex = 0;
             this.learnButton.Text = "Learn";
             this.learnButton.UseVisualStyleBackColor = true;
+            this.learnButton.Click += new System.EventHandler(this.learnButton_Click);
             // 
             // tableLayoutPanel1
             // 
