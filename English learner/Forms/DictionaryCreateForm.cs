@@ -8,6 +8,7 @@ namespace English_learner.Forms
     public partial class DictionaryCreateForm : Form
     {
         readonly string[] prohibitedSymbols = { "#", "%", "&", "{", "}", "\\", "<", ">", "*", "?", "/", "$", "!", "'", "\"", ":", "@", "+", "`", "|", "=" }; // Массив запрещённых символов
+        string newSelectedDictionary = null;
         public DictionaryCreateForm()
         {
             InitializeComponent();
@@ -32,7 +33,7 @@ namespace English_learner.Forms
                         return;
                     }
                 Storage.createTxtFile(nameTextBox.Text); // create txt file
-                Dictionary.Selected = nameTextBox.Text; // делаем выбраным то что в nameTextBox
+                newSelectedDictionary = nameTextBox.Text; // делаем выбраным то что в nameTextBox
                 Close();
             }
             else
@@ -45,6 +46,14 @@ namespace English_learner.Forms
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void nameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                createButton_Click(null, null);
+            else if (e.KeyCode == Keys.Escape)
+                Close();
         }
         #endregion
 
@@ -60,5 +69,7 @@ namespace English_learner.Forms
                     else
                         nameTextBox.ForeColor = Color.Black; // else forecolor is black
         }
+
+        
     }
 }

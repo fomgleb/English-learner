@@ -44,10 +44,9 @@
             this.backButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.backToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openWriteFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dictionaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createOrOpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.progressLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -261,7 +260,6 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backToolStripMenuItem,
-            this.menuToolStripMenuItem,
             this.dictionaryToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -275,21 +273,6 @@
             this.backToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.backToolStripMenuItem.Text = "Back";
             this.backToolStripMenuItem.Click += new System.EventHandler(this.backToolStripMenuItem_Click);
-            // 
-            // menuToolStripMenuItem
-            // 
-            this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openWriteFormToolStripMenuItem});
-            this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
-            this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
-            this.menuToolStripMenuItem.Text = "Menu";
-            // 
-            // openWriteFormToolStripMenuItem
-            // 
-            this.openWriteFormToolStripMenuItem.Name = "openWriteFormToolStripMenuItem";
-            this.openWriteFormToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.openWriteFormToolStripMenuItem.Text = "Open write form";
-            this.openWriteFormToolStripMenuItem.Click += new System.EventHandler(this.openWriteFormToolStripMenuItem_Click);
             // 
             // dictionaryToolStripMenuItem
             // 
@@ -306,11 +289,24 @@
             this.createOrOpenToolStripMenuItem.Text = "Create or Open";
             this.createOrOpenToolStripMenuItem.Click += new System.EventHandler(this.createOrOpenToolStripMenuItem_Click);
             // 
+            // progressLabel
+            // 
+            this.progressLabel.AutoSize = true;
+            this.progressLabel.BackColor = System.Drawing.Color.Transparent;
+            this.progressLabel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.progressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.progressLabel.Location = new System.Drawing.Point(867, 24);
+            this.progressLabel.Name = "progressLabel";
+            this.progressLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.progressLabel.Size = new System.Drawing.Size(0, 31);
+            this.progressLabel.TabIndex = 4;
+            // 
             // LearnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(867, 636);
+            this.Controls.Add(this.progressLabel);
             this.Controls.Add(this.tableLayoutPanel4);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -356,7 +352,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.RichTextBox rightTextBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openWriteFormToolStripMenuItem;
+        private System.Windows.Forms.Label progressLabel;
     }
 }

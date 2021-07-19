@@ -20,11 +20,16 @@ namespace English_learner
 
         private void writeButton_Click(object sender, EventArgs e)
         {
-            DictionaryOpenForm dictionaryOpenForm = new DictionaryOpenForm(); // открываем форму с открытием dictionary
+            DictionaryOpenForm dictionaryOpenForm = new DictionaryOpenForm(false); // открываем форму с открытием dictionary
             Visible = false;
             dictionaryOpenForm.ShowDialog();
+            if (dictionaryOpenForm.SelectedDictionaries.Count == 0)
+            {
+                Visible = true;
+                return;
+            }
 
-            WriteForm writeForm = new WriteForm();
+            WriteForm writeForm = new WriteForm(dictionaryOpenForm.SelectedDictionaries[0]);
             writeForm.ShowDialog();
             if (writeForm.backed)
                 Visible = true;
@@ -37,8 +42,13 @@ namespace English_learner
             DictionaryOpenForm dictionaryOpenForm = new DictionaryOpenForm(true);
             Visible = false;
             dictionaryOpenForm.ShowDialog();
+            if (dictionaryOpenForm.SelectedDictionaries.Count == 0)
+            {
+                Visible = true;
+                return;
+            }
 
-            LearnForm learnForm = new LearnForm();
+            LearnForm learnForm = new LearnForm(dictionaryOpenForm.SelectedDictionaries);
             learnForm.ShowDialog();
             if (learnForm.backed)
                 Visible = true;

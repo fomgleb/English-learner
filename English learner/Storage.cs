@@ -6,7 +6,7 @@ namespace English_learner
 {
     static class Storage
     {
-        static readonly public string pathToMainDir = Environment.CurrentDirectory + "\\English-Learner-Saves"; // Путь к главной папке
+        static readonly public string pathToMainDir = Environment.CurrentDirectory; // Путь к главной папке
 
         static public void createMainDir()
         {
@@ -47,22 +47,21 @@ namespace English_learner
 
         static public List<string> getDictNamesList()
         {
-                createMainDir();
-                string[] pathsToFiles = Directory.GetFiles(pathToMainDir);
-                List<string> fileNames = new List<string> { };
-                foreach (var pathToFile in pathsToFiles)
-                {
-                    string fileName = Path.GetFileName(pathToFile);
+            createMainDir();
+            string[] pathsToFiles = Directory.GetFiles(pathToMainDir);
+            List<string> fileNames = new List<string> { };
+            foreach (var pathToFile in pathsToFiles)
+            {
+                string fileName = Path.GetFileName(pathToFile);
+                if (fileName.Contains(".txt"))
                     fileNames.Add(fileName.Replace(".txt", ""));
-                }
-                return fileNames;
+            }
+            return fileNames;
         }
 
         static public string getContentFromTxtFile(string fileName)
         {
-            if (Dictionary.Selected != null)
-                return File.ReadAllText($"{pathToMainDir}\\{fileName}.txt");
-            else return "";
+            return File.ReadAllText($"{pathToMainDir}\\{fileName}.txt");
         }
     }
 }

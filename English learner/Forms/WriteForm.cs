@@ -9,18 +9,24 @@ namespace English_learner.Forms
     {
         public bool closed = false;
         public bool backed = false;
-        public WriteForm()
+        private string selectedDictionary;
+        public WriteForm(string selectedDictionary)
         {
             InitializeComponent();
-            checkSelectedDictionary();
+            this.selectedDictionary = selectedDictionary;
+            updateDatas();
         }
 
         #region Нажатие кнопок
         private void createOrOpenButton_Click(object sender, EventArgs e)
         {
-            DictionaryOpenForm writeDictionaryOpenForm = new DictionaryOpenForm(); // экземпляр формы открытия словаря
-            writeDictionaryOpenForm.ShowDialog(); // показываем его как showDialog, тоесть текющее выпонение кода останавливается. Выполняется код уже в новооткрытой форме
-            checkSelectedDictionary(); // проверить выбраный словарь
+            DictionaryOpenForm dictionaryOpenForm = new DictionaryOpenForm(false); // экземпляр формы открытия словаря
+            dictionaryOpenForm.ShowDialog(); // показываем его как showDialog, тоесть текющее выпонение кода останавливается. Выполняется код уже в новооткрытой форме
+
+            if (dictionaryOpenForm.SelectedDictionaries.Count != 0)
+                selectedDictionary = dictionaryOpenForm.SelectedDictionaries[0]; // обновить выбраную директротию
+            updateDatas(); // обновить данные
+
             englishTextBox.Focus(); // фокусируем на englishTextBox
             InputLanguage.CurrentInputLanguage = InputLanguage.FromCulture(new System.Globalization.CultureInfo("en-US")); // переключение якыка клавиатуры на Английский
         }
@@ -76,36 +82,6 @@ namespace English_learner.Forms
         }
         #endregion
 
-        private void checkSelectedDictionary()
-        {
-            if (Dictionary.Selected != null) // если какой-то словарь выбран
-            {
-                englishTextBox.Enabled = true; // врубаем всё
-                englishTextBox.Text = "";
-                russianTextBox.Enabled = true;
-                russianTextBox.Text = "";
-                enterLabel.Visible = true;
-                Text = "Write - " + Dictionary.Selected;
-                contentTextBox.Enabled = true;
-                tableLayoutPanel5.Visible = true;
-                tableLayoutPanel4.ColumnCount = 2;
-                showHideToolStripMenuItem.Checked = true;
-                uploadDataToContentTextBox();
-            }
-            else // иначе
-            {
-                englishTextBox.Enabled = false; // вырубаем
-                englishTextBox.Text = "Create or open a dictionary";
-                russianTextBox.Enabled = false;
-                russianTextBox.Text = "Создай или открой словарь";
-                enterLabel.Visible = false;
-                Text = "Write";
-                contentTextBox.Enabled = false;
-                tableLayoutPanel5.Visible = false;
-                tableLayoutPanel4.ColumnCount = 1;
-                showHideToolStripMenuItem.Checked = false;
-            }
-        }
 
         private void russianAndEnglishTextBox_KeyDown(object sender, KeyEventArgs e) // нажатие клавиши на клавиатуре на text boxes
         {
@@ -118,31 +94,42 @@ namespace English_learner.Forms
                 }
                 else
                 {
-                    Storage.addContentToTxtFile(Dictionary.Selected, $"{englishTextBox.Text} = {russianTextBox.Text}"); // добавляем в txt file контент что написать в text боксах
+                    contentTextBox.Text += $"\n{englishTextBox.Text} = {russianTextBox.Text}"; // добавляем в contentTextBox контент что написан в text боксах
+                    if (contentTextBox.Text[0] == '\n' || contentTextBox.Text[0] == '\n')
+                        contentTextBox.Text = contentTextBox.Text.Remove(0, 1);
                     englishTextBox.Text = ""; // очищаем их
                     russianTextBox.Text = "";
-                    uploadDataToContentTextBox(); // обноволяем данные в contentTextBox
+                    updateDatas(); // обновляем данные в contentTextBox
                     englishTextBox.Focus(); // фокусируемся на englishTextBox
                     InputLanguage.CurrentInputLanguage = InputLanguage.FromCulture(new System.Globalization.CultureInfo("en-US")); // переключение якыка клавиатуры на Английский
                 }
             }
         }        
 
-        private void uploadDataToContentTextBox() // обновление данных в contentTextBox
+        private void updateDatas() // обновление данных в contentTextBox
         {
-            contentTextBox.Text = Storage.getContentFromTxtFile(Dictionary.Selected); // загружаем данные из txt file в contentTextBox
-            contentTextBox.SelectionStart = contentTextBox.TextLength; // устанавливаем курсор в конец contentTextBox
-            contentTextBox.ScrollToCaret(); // прокручивает скролл туда где курсор
+            try
+            {
+                contentTextBox.Text = Storage.getContentFromTxtFile(selectedDictionary); // загружаем данные из txt file в contentTextBox
+                contentTextBox.SelectionStart = contentTextBox.TextLength; // устанавливаем курсор в конец contentTextBox
+                contentTextBox.ScrollToCaret(); // прокручивает скролл туда где курсор
+                Text = "Write - " + selectedDictionary; // добавляет в название формы, имя выбраной директории
+            }
+            catch (Exception)
+            {
+                
+            }
+            
         }
 
         private void WriteForm_Shown(object sender, EventArgs e) // при появлении формы
         {
-            uploadDataToContentTextBox(); // обновление данных в contentTextBox
+            updateDatas(); // обновление данных в contentTextBox
         }
 
         private void contentTextBox_TextChanged(object sender, EventArgs e) // если текст в contentTextBox меняется
         {
-            Storage.addNewContentToTxtFile(Dictionary.Selected, contentTextBox.Text); // сохраняем это в txt file
+            Storage.addNewContentToTxtFile(selectedDictionary, contentTextBox.Text); // сохраняем это в txt file
         }
     }
 }

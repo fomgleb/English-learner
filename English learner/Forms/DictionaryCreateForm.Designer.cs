@@ -132,6 +132,7 @@
             this.nameTextBox.Size = new System.Drawing.Size(623, 43);
             this.nameTextBox.TabIndex = 2;
             this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
+            this.nameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nameTextBox_KeyDown);
             // 
             // DictionaryCreateForm
             // 

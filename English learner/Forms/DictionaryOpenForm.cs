@@ -1,43 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace English_learner.Forms
 {
     public partial class DictionaryOpenForm : Form
     {
-        bool disabledCreateAndDeleteButtons = false;
-        public DictionaryOpenForm()
-        {
-            InitializeComponent();
-            loadAllDatas();
-        }
+        bool forLearnForm = false;
 
-        public DictionaryOpenForm(bool disabledCreateAndDeleteButtons)
+        public List<string> SelectedDictionaries { get; private set; } = new List<string> { };
+
+        public DictionaryOpenForm(bool forLearnFrom)
         {
             InitializeComponent();
             loadAllDatas();
-            if (disabledCreateAndDeleteButtons)
+            if (forLearnFrom)
             {
                 tableLayoutPanel5.RowCount = 1;
                 deleteButton.Visible = false;
                 createButton.Visible = false;
-                this.disabledCreateAndDeleteButtons = true;
+                this.forLearnForm = true;
             }
+            if (forLearnFrom)
+                listBox.SelectionMode = SelectionMode.MultiExtended;
+            else
+                listBox.SelectionMode = SelectionMode.One;
         }
 
         #region Нажатие кнопок
         private void openButton_Click(object sender, EventArgs e)
         {
+            SelectedDictionaries.Clear();
+            if (true)
+            {
+
+            }
             if (listBox.SelectedItem != null)
             {
-                Dictionary.Selected = listBox.SelectedItem.ToString();
+                foreach (string str in listBox.SelectedItems)
+                    SelectedDictionaries.Add(str);
                 Close();
             }
         }
@@ -54,9 +55,11 @@ namespace English_learner.Forms
                 DialogResult dr = MessageBox.Show($"Do you really want to delete '{listBox.SelectedItem}'?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
-                    if (Dictionary.Selected == listBox.SelectedItem.ToString())
-                        Dictionary.Selected = null;
+                    if (SelectedDictionaries.Count != 0 && listBox.SelectedItem.ToString() == SelectedDictionaries[0])
+                        SelectedDictionaries.Clear();
                     Storage.deleteTxtFile(listBox.SelectedItem.ToString());
+                    foreach (string str in listBox.SelectedItems)
+                        SelectedDictionaries.Add(str);
                     loadAllDatas();
                 }
             }
@@ -64,7 +67,7 @@ namespace English_learner.Forms
 
         private void listBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete && !disabledCreateAndDeleteButtons)
+            if (e.KeyCode == Keys.Delete && !forLearnForm)
                 deleteButton_Click(null, null);
             else if (e.KeyCode == Keys.Enter)
                 openButton_Click(null, null);
@@ -72,11 +75,7 @@ namespace English_learner.Forms
 
         private void listBox_DoubleClick(object sender, EventArgs e)
         {
-            if (listBox.SelectedItem != null)
-            {
-                Dictionary.Selected = listBox.SelectedItem.ToString();
-                Close();
-            }
+            openButton_Click(null, null);
         }
 
         private void createButton_Click(object sender, EventArgs e)

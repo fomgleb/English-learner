@@ -17,21 +17,37 @@ namespace English_learner.Forms
         private int currentSentenceNum = 0;
         private List<string> englishPart = new List<string> { };
         private List<string> russianPart = new List<string> { };
+        private List<string> selectedDictionariesList = new List<string> { };
 
-        public LearnForm()
+        public LearnForm(List<string> selectedDictionariesList)
         {
             InitializeComponent();
 
-            allTheNecessaryManipulatesWithText(Storage.getContentFromTxtFile(Dictionary.Selected)); // все необходимые манипуляции со строками
+            this.selectedDictionariesList = selectedDictionariesList;
+
+
+            allTheNecessaryManipulatesWithText(selectedDictionariesList); // все необходимые манипуляции со строками
             checkWhetherDictionaryIsSelected();
-            uploadDataToTextBoxes();
+            updateData();
         }
 
 
         #region Strings Manipulation
-        private void allTheNecessaryManipulatesWithText(string text)
+        private void allTheNecessaryManipulatesWithText(List<string> allDictionaries)
         {
-            cutStringsIntoTwoParts(randomizeStrings(cutTextIntoStrings(text)));
+            cutStringsIntoTwoParts(randomizeStrings(cutTextIntoStrings(allTextToString(allDictionaries))));
+        }
+
+        private string allTextToString(List<string> allDictionaries)
+        {
+            // Записываем в переменную весь текст
+            string allText = "";
+            foreach (var fileName in allDictionaries)
+            {
+                allText += Storage.getContentFromTxtFile(fileName);
+                allText += "\n";
+            }
+            return allText;
         }
 
         private List<string> cutTextIntoStrings(string text)
@@ -109,7 +125,7 @@ namespace English_learner.Forms
 
         private void checkWhetherDictionaryIsSelected()
         {
-            if (Dictionary.Selected != null)
+            if (selectedDictionariesList != null)
             {
                 if (currentSentenceNum == 0)
                 {
@@ -127,7 +143,9 @@ namespace English_learner.Forms
 
                 englishTextBox.Text = "";
                 rightTextBox.Enabled = true;
-                Text = $"learn - {Dictionary.Selected}";
+                Text = $"learn -";
+                foreach (var dictionaryName in selectedDictionariesList)
+                    Text += $" {dictionaryName}";
             }
             else
             {
@@ -144,22 +162,13 @@ namespace English_learner.Forms
             }
         }
 
-        private void uploadDataToTextBoxes()
+        private void updateData()
         {
-            if (Dictionary.Selected != null)
+            if (selectedDictionariesList != null)
             {
-                if (Storage.getContentFromTxtFile(Dictionary.Selected) == "")
-                {
-                    englishTextBox.Text = "The current dictionary is empty";  
-                    russianTextBox.Text = "Текущий словарь пуст";
-                    englishTextBox.Enabled = false;
-                    russianTextBox.Enabled = false;
-                    backButton.Enabled = false;
-                    checkButton.Enabled = false;
-                    return;
-                }
                 russianTextBox.Text = russianPart[currentSentenceNum];
                 englishTextBox.Text = "";
+                progressLabel.Text = $"{currentSentenceNum+1}/{russianPart.Count}";
             }
         }
 
@@ -215,37 +224,37 @@ namespace English_learner.Forms
             }
             else if (currentSentenceNum == russianPart.Count - 1)
             {
-                DialogResult dr = MessageBox.Show("Congratulations", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Dictionary.Selected = null;
-                checkWhetherDictionaryIsSelected();
+                DialogResult dr = MessageBox.Show("Congratulations!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                backed = true;
+                Close();
             }
             else if (checkButton.Text == "Next")
             {
                 if (currentSentenceNum == 0)
                     backButton.Enabled = true;
                 currentSentenceNum += 1;
-                uploadDataToTextBoxes();
+                updateData();
                 englishTextBox.ForeColor = Color.Black;
                 checkButton.Text = "Check";
                 visibleRightTextBox(false);
-                
             }
-        }
-
-        private void openWriteFormToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            WriteForm writeForm = new WriteForm();
-            writeForm.Show();
         }
 
         private void createOrOpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DictionaryOpenForm dictionaryOpenForm = new DictionaryOpenForm(true);
             dictionaryOpenForm.ShowDialog();
+            if (dictionaryOpenForm.SelectedDictionaries.Count != 0)
+            {
+                selectedDictionariesList.Clear();
+                currentSentenceNum = 0;
+                foreach (var dictionary in dictionaryOpenForm.SelectedDictionaries)
+                    selectedDictionariesList.Add(dictionary);
+            }
 
-            allTheNecessaryManipulatesWithText(Storage.getContentFromTxtFile(Dictionary.Selected));
+            allTheNecessaryManipulatesWithText(selectedDictionariesList);
             checkWhetherDictionaryIsSelected();
-            uploadDataToTextBoxes();
+            updateData();
             englishTextBox.Focus();
             InputLanguage.CurrentInputLanguage = InputLanguage.FromCulture(new System.Globalization.CultureInfo("en-US"));
         }
@@ -268,7 +277,7 @@ namespace English_learner.Forms
         private void backButton_Click(object sender, EventArgs e)
         {
             currentSentenceNum -= 1;
-            uploadDataToTextBoxes();
+            updateData();
             if (currentSentenceNum == 0)
                 backButton.Enabled = false;
         }

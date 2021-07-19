@@ -135,6 +135,7 @@
             "Download..."});
             this.listBox.Location = new System.Drawing.Point(3, 3);
             this.listBox.Name = "listBox";
+            this.listBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBox.Size = new System.Drawing.Size(606, 232);
             this.listBox.TabIndex = 1;
             this.listBox.DoubleClick += new System.EventHandler(this.listBox_DoubleClick);

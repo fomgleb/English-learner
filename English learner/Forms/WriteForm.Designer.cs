@@ -64,7 +64,7 @@
             // createOrOpenButton
             // 
             this.createOrOpenButton.Name = "createOrOpenButton";
-            this.createOrOpenButton.Size = new System.Drawing.Size(180, 22);
+            this.createOrOpenButton.Size = new System.Drawing.Size(159, 22);
             this.createOrOpenButton.Text = "Create or Open";
             this.createOrOpenButton.Click += new System.EventHandler(this.createOrOpenButton_Click);
             // 
@@ -73,7 +73,7 @@
             this.showHideToolStripMenuItem.Checked = true;
             this.showHideToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showHideToolStripMenuItem.Name = "showHideToolStripMenuItem";
-            this.showHideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showHideToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.showHideToolStripMenuItem.Text = "Show dictionary";
             this.showHideToolStripMenuItem.Click += new System.EventHandler(this.showHideToolStripMenuItem_Click);
             // 
@@ -143,13 +143,12 @@
             // englishTextBox
             // 
             this.englishTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.englishTextBox.Enabled = false;
             this.englishTextBox.Font = new System.Drawing.Font("Verdana", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.englishTextBox.Location = new System.Drawing.Point(3, 48);
             this.englishTextBox.Name = "englishTextBox";
             this.englishTextBox.Size = new System.Drawing.Size(577, 148);
             this.englishTextBox.TabIndex = 1;
-            this.englishTextBox.Text = "Create or open a dictionary";
+            this.englishTextBox.Text = "";
             this.englishTextBox.Click += new System.EventHandler(this.englishTextBox_Click);
             this.englishTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.russianAndEnglishTextBox_KeyDown);
             this.englishTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.englishTextBox_PreviewKeyDown);
@@ -172,13 +171,12 @@
             // russianTextBox
             // 
             this.russianTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.russianTextBox.Enabled = false;
             this.russianTextBox.Font = new System.Drawing.Font("Verdana", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.russianTextBox.Location = new System.Drawing.Point(3, 48);
             this.russianTextBox.Name = "russianTextBox";
             this.russianTextBox.Size = new System.Drawing.Size(577, 148);
             this.russianTextBox.TabIndex = 2;
-            this.russianTextBox.Text = "Создай или открой словарь";
+            this.russianTextBox.Text = "";
             this.russianTextBox.Click += new System.EventHandler(this.russianTextBox_Click);
             this.russianTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.russianAndEnglishTextBox_KeyDown);
             this.russianTextBox.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.englishTextBox_PreviewKeyDown);
@@ -206,7 +204,6 @@
             this.enterLabel.Size = new System.Drawing.Size(350, 35);
             this.enterLabel.TabIndex = 4;
             this.enterLabel.Text = "Press Enter to continue";
-            this.enterLabel.Visible = false;
             // 
             // tableLayoutPanel4
             // 
@@ -240,12 +237,13 @@
             // contentTextBox
             // 
             this.contentTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.contentTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.contentTextBox.Location = new System.Drawing.Point(3, 3);
             this.contentTextBox.Name = "contentTextBox";
             this.contentTextBox.Size = new System.Drawing.Size(584, 460);
             this.contentTextBox.TabIndex = 0;
             this.contentTextBox.TabStop = false;
-            this.contentTextBox.Text = "Download...";
+            this.contentTextBox.Text = "";
             this.contentTextBox.TextChanged += new System.EventHandler(this.contentTextBox_TextChanged);
             // 
             // WriteForm
